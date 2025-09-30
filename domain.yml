@@ -1,0 +1,49 @@
+version: "3.0"
+intents:
+  - order_food
+  - change_table
+  - remove_item
+  - confirm
+  - deny
+  - greet
+  - goodbye
+  - inform_add
+  - inform_modify
+
+entities:
+  - food
+  - quantity
+  - table
+  - food_raw
+
+slots:
+  pending_order:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+  table_name:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: custom
+
+responses:
+  utter_greet:
+    - text: "Chào bạn, tôi có thể giúp gì cho bạn?"
+  utter_goodbye:
+    - text: "Cảm ơn, hẹn gặp lại!"
+  utter_ask_table:
+    - text: "Dạ, cho biết bàn hoặc nói 'mang về' ạ."
+  utter_ask_clarify_food:
+    - text: "Món bạn nói có nhiều kết quả, vui lòng chọn số hoặc tên món."
+  utter_ask_confirm:
+    - text: "Dạ, bạn gọi {order_summary} tại {table}, đúng không ạ?"
+  utter_order_saved:
+    - text: "Đã lưu đơn vào hệ thống."
+
+actions:
+  - action_process_order
+  - action_confirm_order
+  - action_cancel_order
+  - action_list_food_options

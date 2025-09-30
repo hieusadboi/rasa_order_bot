@@ -1,0 +1,40 @@
+version: "3.1"
+nlu:
+  - intent: greet
+    examples: |
+      - xin chào
+      - chào bạn
+  - intent: goodbye
+    examples: |
+      - tạm biệt
+      - bye
+  - intent: order_food
+    examples: |
+      - cho tôi [2](quantity) [phở](food) và [3](quantity) [coca](food) [bàn 3](table)
+      - [2](quantity) [cơm tấm sườn bì chả](food) [bàn 5](table)
+      - cho tôi 2 phở và 3 coca bàn 3
+      - 2 cơm tấm sườn bì chả bàn 5
+      - lấy 1 phở bò mang về
+      - cho bàn 2 1 lẩu thái và 2 trà đá
+      - thêm 2 trà đá nữa
+      - 3 coca
+  - intent: change_table
+    examples: |
+      - à không bàn 2
+      - đổi sang bàn 4
+      - bàn vip 2
+  - intent: remove_item
+    examples: |
+      - bỏ món coca đi
+      - xóa 1 phần phở
+      - loại bỏ phở
+  - intent: confirm
+    examples: |
+      - đúng rồi
+      - vâng
+      - ok
+  - intent: deny
+    examples: |
+      - không
+      - không phải
+      - sửa lại

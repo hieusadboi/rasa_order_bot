@@ -1,0 +1,16 @@
+version: "3.0"
+stories:
+- story: happy path order and confirm
+  steps:
+  - intent: order_food
+  - action: action_process_order
+  - intent: confirm
+  - action: action_confirm_order
+- story: order then change table (inline)
+  steps:
+  - intent: order_food
+  - action: action_process_order
+  - intent: change_table
+  - action: action_process_order
+  - intent: confirm
+  - action: action_confirm_order
