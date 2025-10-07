@@ -1,14 +1,16 @@
-version: "3.0"
 intents:
+  - greet
+  - goodbye
   - order_food
   - change_table
   - remove_item
   - confirm
   - deny
-  - greet
-  - goodbye
-  - inform_add
-  - inform_modify
+  - ask_menu
+  - ask_price
+  - add_item
+  - change_item
+  - cancel
 
 entities:
   - food
@@ -47,3 +49,4 @@ actions:
   - action_confirm_order
   - action_cancel_order
   - action_list_food_options
+  - action_change_order

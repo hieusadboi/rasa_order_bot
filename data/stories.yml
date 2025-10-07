@@ -1,16 +1,118 @@
-version: "3.0"
+version: "3.1"
+
 stories:
-- story: happy path order and confirm
-  steps:
-  - intent: order_food
-  - action: action_process_order
-  - intent: confirm
-  - action: action_confirm_order
-- story: order then change table (inline)
-  steps:
-  - intent: order_food
-  - action: action_process_order
-  - intent: change_table
-  - action: action_process_order
-  - intent: confirm
-  - action: action_confirm_order
+  # 1. Happy path: gọi món và xác nhận
+  - story: happy path order and confirm
+    steps:
+      - intent: order_food
+      - action: action_process_order
+      - intent: confirm
+      - action: action_confirm_order
+
+  # 2. Order rồi đổi bàn inline
+  - story: order then change table (inline)
+    steps:
+      - intent: order_food
+      - action: action_process_order
+      - intent: change_table
+      - action: action_process_order
+      - intent: confirm
+      - action: action_confirm_order
+
+  # 3. Order rồi hỏi giá trước khi confirm
+  - story: order ask price then confirm
+    steps:
+      - intent: order_food
+      - action: action_process_order
+      - intent: ask_price
+      - action: action_list_food_options
+      - intent: confirm
+      - action: action_confirm_order
+
+  # 4. Order thêm món, đổi món rồi confirm
+  - story: order add then change then confirm
+    steps:
+      - intent: order_food
+      - action: action_process_order
+      - intent: add_item
+      - action: action_process_order
+      - intent: change_item
+      - action: action_process_order
+      - intent: confirm
+      - action: action_confirm_order
+
+  # 5. Order nhiều món rồi hủy một món
+  - story: order multiple then remove one
+    steps:
+      - intent: order_food
+      - action: action_process_order
+      - intent: add_item
+      - action: action_process_order
+      - intent: remove_item
+      - action: action_change_order
+      - intent: confirm
+      - action: action_confirm_order
+
+  # 6. Order nhiều món rồi đổi bàn
+  - story: order multiple then change table
+    steps:
+      - intent: order_food
+      - action: action_process_order
+      - intent: add_item
+      - action: action_process_order
+      - intent: change_table
+      - action: action_process_order
+      - intent: confirm
+      - action: action_confirm_order
+
+  # 7. Confirm rồi gọi thêm món mới
+  - story: confirm then add new item
+    steps:
+      - intent: order_food
+      - action: action_process_order
+      - intent: confirm
+      - action: action_confirm_order
+      - intent: add_item
+      - action: action_process_order
+      - intent: confirm
+      - action: action_confirm_order
+
+  # 8. Confirm xong lại hủy đơn
+  - story: confirm then cancel
+    steps:
+      - intent: order_food
+      - action: action_process_order
+      - intent: confirm
+      - action: action_confirm_order
+      - intent: cancel
+      - action: action_cancel_order
+
+  # 9. Hỏi menu trước khi gọi món
+  - story: ask menu then order
+    steps:
+      - intent: ask_menu
+      - action: action_list_food_options
+      - intent: order_food
+      - action: action_process_order
+      - intent: confirm
+      - action: action_confirm_order
+
+  # 10. Order nhầm số lượng rồi sửa
+  - story: order wrong quantity then correct
+    steps:
+      - intent: order_food
+      - action: action_process_order
+      - intent: change_item
+      - action: action_process_order
+      - intent: confirm
+      - action: action_confirm_order
+
+  # 11. Order nhiều rồi hủy hết
+  - story: order multiple then cancel all
+    steps:
+      - intent: order_food
+      - action: action_process_order
+      - intent: add_item
+      - action: action_process_order
+      - intent: cancel
+      - action: action_cancel_order

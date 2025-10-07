@@ -224,6 +224,7 @@ class ActionListFoodOptions(Action):
     def name(self) -> Text:
         return "action_list_food_options"
 
+
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         p = tracker.get_slot('pending_order')
         if not p:
@@ -239,3 +240,61 @@ class ActionListFoodOptions(Action):
         else:
             dispatcher.utter_message(text="Không có lựa chọn nào đang chờ.")
         return []
+    
+
+class ActionChangeOrder(Action):
+    def name(self) -> Text:
+        return "action_change_order"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        p = tracker.get_slot("pending_order")
+        if not p:
+            dispatcher.utter_message(text="❌ Hiện tại không có đơn hàng nào để sửa.")
+            return []
+
+        try:
+            payload = json.loads(p)
+        except Exception:
+            dispatcher.utter_message(text="❌ Dữ liệu đơn hàng không hợp lệ.")
+            return []
+
+        resolved = payload.get("resolved", [])
+        if not resolved:
+            dispatcher.utter_message(text="❌ Đơn hàng trống, không có gì để sửa.")
+            return []
+
+        # Lấy entity mới từ câu nói (food + quantity)
+        latest_food = next(tracker.get_latest_entity_values("food"), None)
+        latest_qty = next(tracker.get_latest_entity_values("quantity"), None)
+
+        if not latest_food:
+            dispatcher.utter_message(text="⚠️ Bạn muốn đổi món nào?")
+            return []
+
+        # Tìm món trong order để sửa
+        found = False
+        for item in resolved:
+            if latest_food.lower() in item["food"].lower():
+                if latest_qty:
+                    try:
+                        qty = int(latest_qty)
+                    except:
+                        qty = 1
+                    item["quantity"] = qty
+                found = True
+                break
+
+        if not found:
+            dispatcher.utter_message(text=f"⚠️ Trong đơn chưa có món {latest_food}. Bạn có muốn thêm mới không?")
+            return []
+
+        # Cập nhật slot pending_order
+        payload["resolved"] = resolved
+        new_payload = json.dumps(payload, ensure_ascii=False)
+
+        dispatcher.utter_message(text=f"✅ Đã cập nhật lại đơn: {resolved}")
+        return [SlotSet("pending_order", new_payload)]
+

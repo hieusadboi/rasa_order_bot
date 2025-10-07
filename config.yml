@@ -1,15 +1,22 @@
 language: "vi"
+
 pipeline:
-- name: WhitespaceTokenizer
-- name: RegexFeaturizer
-- name: LexicalSyntacticFeaturizer
-- name: CountVectorsFeaturizer
-- name: DIETClassifier
-  epochs: 100
-- name: EntitySynonymMapper
-- name: ResponseSelector
-  epochs: 100
+  - name: WhitespaceTokenizer
+  - name: RegexFeaturizer
+  - name: LexicalSyntacticFeaturizer
+  - name: CountVectorsFeaturizer
+  - name: DIETClassifier
+    epochs: 20 # giảm xuống 20–30 cho hợp lý
+    batch_size: [64, 256] # tăng tốc và ổn định hơn
+    learning_rate: 0.002 # giảm nhẹ để tránh overfit
+  - name: EntitySynonymMapper
+  - name: ResponseSelector
+    epochs: 20 # cũng giảm xuống 20
+
 policies:
-- name: MemoizationPolicy
-- name: RulePolicy
+  - name: MemoizationPolicy
+  - name: RulePolicy
+  - name: TEDPolicy
+    epochs: 20 # nên thêm TEDPolicy để học tốt với stories nhiều
+
 assistant_id: 20250928-024133-broad-ensemble
